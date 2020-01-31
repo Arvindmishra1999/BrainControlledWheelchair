@@ -1,20 +1,26 @@
+/*
+*
+* Project Name:     Mindwave Automation - Brain Controlled Wheelchair
+* Author List:      Heeral Dedhia, Arvind Sridhar, Poonam Chawda, Arvind Mishra
+* Filename:         blink.py
+* Functions:        main()
+* Global Variables: -
+*
+*/
+
 from NeuroPy import NeuroPy
 import time
-from time import sleep
-import final
+import motor
 
 def main():
-    neuropy = NeuroPy("/dev/rfcomm0")
+    neuropy = NeuroPy("/dev/rfcomm0") #instantiate NeuroPy class
 
-    neuropy.start() 
-    start_time = 0
-    i = 0
-    blinked = False
+    neuropy.start() #start thread
+    start_time = 0 
+    blinked = False #if blink is detected
     last_blink_time = 0
     double_blink = False
     triple_blink = False
-    quadruple_blink = False
-    quintuple_blink = False
     i = 100
     j = 100
 
@@ -42,26 +48,21 @@ def main():
                         blinked = True
             if blinked and time.clock()-last_blink_time > .61: #if a certain amount of time has passed since the last blink
                 if triple_blink:
-                    print "Triple Blink..........left"
-                    final.forward_left()
-                    time.sleep(8)
-                    final.forward()
+                    print "Triple blink detected .......... turning left"
+                    motor.forward_left()
+                    time.sleep(3)
+                    motor.forward()
                     break
                 
                 elif double_blink:
-                    print "Double Blink...........right"
-                    final.forward_right()
-                    time.sleep(8)
-                    final.forward()
+                    print "Double blink detected ........... turning right"
+                    motor.forward_right()
+                    time.sleep(3)
+                    motor.forward()
                     break
                     
-
-                double_blink = blinked = triple_blink= quadruple_blink = quintuple_blink = False
+                double_blink = blinked = triple_blink = False
         time.sleep(2)
         return
     finally:
         neuropy.stop()
-        
-        
-
-
